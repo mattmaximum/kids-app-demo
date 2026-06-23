@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Road Trip I-Spy</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #EAE4DA;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    header {
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #332E28;
+      letter-spacing: 0.01em;
+    }
+
+    header p {
+      font-size: 0.875rem;
+      color: #857D74;
+      margin-top: 4px;
+    }
+
+    .card {
+      background: #F5F0E8;
+      border-radius: 22px;
+      padding: 36px 28px;
+      width: 100%;
+      box-shadow: 0 2px 18px rgba(0, 0, 0, 0.07);
+      text-align: center;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .splash-emoji {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .splash-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #332E28;
+      margin-bottom: 8px;
+    }
+
+    .splash-sub {
+      font-size: 0.95rem;
+      color: #857D74;
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    .badge.window  { background: #DCF0E0; color: #3A7A50; }
+    .badge.incar   { background: #DCE8F5; color: #2E5E92; }
+    .badge.mixed   { background: #F2E8D4; color: #8A6030; }
+
+    .game-emoji {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .game-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2A2520;
+      margin-bottom: 16px;
+    }
+
+    .instructions {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #47413A;
+      margin-bottom: 18px;
+    }
+
+    .hint {
+      font-size: 0.83rem;
+      color: #857D74;
+      background: #EAE4DA;
+      border-radius: 10px;
+      padding: 10px 14px;
+      line-height: 1.55;
+      width: 100%;
+    }
+
+    .hint strong {
+      color: #68625A;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 20px;
+      background: #7A9C7E;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: background 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:hover  { background: #6E8F72; }
+    .btn:active { background: #628067; transform: scale(0.98); }
+
+    footer {
+      font-size: 0.75rem;
+      color: #A89F95;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>Road Trip I-Spy</h1>
+      <p>12 games to play on the road</p>
+    </header>
+
+    <div class="card" id="card">
+      <span class="splash-emoji">👀</span>
+      <p class="splash-title">Ready to play?</p>
+      <p class="splash-sub">Tap the button below to get your first game.</p>
+    </div>
+
+    <button class="btn" id="btn" onclick="nextGame()">New Game</button>
+
+    <footer>Tap again for a different game &mdash; it won't repeat the last one.</footer>
+
+  </div>
+
+  <script>
+    const games = [
+      {
+        title: "Color Spotter",
+        emoji: "🎨",
+        type: "window",
+        label: "Out the Window",
+        instructions: "Pick a color, then challenge your kids to be the first one to spot something that color out the window. Whoever finds it first wins!",
+        hint: "Tip: Red, blue, and yellow are easiest to spot on the road."
+      },
+      {
+        title: "Vehicle Hunt",
+        emoji: "🚛",
+        type: "window",
+        label: "Out the Window",
+        instructions: "See who can spot a big truck, a bus, or a motorcycle first. Shout it out the moment you see one!",
+        hint: "Tip: Big trucks are easiest to spot from far away on the highway."
+      },
+      {
+        title: "Animal Lookout",
+        emoji: "🐄",
+        type: "window",
+        label: "Out the Window",
+        instructions: "Everyone look outside — first one to spot any animal wins! Cows, horses, dogs, and birds all count.",
+        hint: "Tip: Farms and open fields are the best spots for this one."
+      },
+      {
+        title: "Sign Shape Hunt",
+        emoji: "🔺",
+        type: "window",
+        label: "Out the Window",
+        instructions: "Look at the road signs — can you find one that's a triangle, a circle, or a square? Name the shape out loud when you spot it!",
+        hint: "Tip: Stop signs are octagons — finding one is a bonus round!"
+      },
+      {
+        title: "Sky Watch",
+        emoji: "☁️",
+        type: "window",
+        label: "Out the Window",
+        instructions: "Look up at the sky together. What can you see? Clouds, a plane, a bird, the sun? Take turns naming what you find.",
+        hint: "Tip: Ask if any clouds look like an animal or a funny shape."
+      },
+      {
+        title: "Letter Hunt",
+        emoji: "🔤",
+        type: "window",
+        label: "Out the Window",
+        instructions: "Pick a letter — A, B, S, or O are great starters. Look for it on signs, trucks, or buildings outside the window!",
+        hint: "Tip: Gas stations and big store signs are easy to read from the road."
+      },
+      {
+        title: "Number Hunt",
+        emoji: "🔢",
+        type: "window",
+        label: "Out the Window",
+        instructions: "Look for the numbers 1 through 5 on road signs or license plates. Call it out the moment you find one!",
+        hint: "Tip: License plates on the car ahead are a great place to look."
+      },
+      {
+        title: "Touch It",
+        emoji: "👋",
+        type: "incar",
+        label: "In the Car",
+        instructions: "Call out a color — everyone races to touch something that color inside the car. First one to touch it wins!",
+        hint: "Tip: Try colors you can already see nearby — yellow, black, or grey."
+      },
+      {
+        title: "Body Part I-Spy",
+        emoji: "👁️",
+        type: "incar",
+        label: "In the Car",
+        instructions: "Give a clue like \"I spy something you use to hear\" — let the kids guess the body part! Take turns being the clue-giver.",
+        hint: "Tip: Keep clues simple — hear → ears, see → eyes, eat → mouth."
+      },
+      {
+        title: "Counting Game",
+        emoji: "🖐️",
+        type: "incar",
+        label: "In the Car",
+        instructions: "Give everyone a counting job — windows, cup holders, buttons on the dashboard, or seats. Count independently, then compare answers!",
+        hint: "Tip: Counting windows is easiest for the youngest kids."
+      },
+      {
+        title: "What's That Sound?",
+        emoji: "👂",
+        type: "incar",
+        label: "In the Car",
+        instructions: "Everyone close their eyes for 10 seconds and just listen. Then go around and name one sound you heard.",
+        hint: "Tip: Tires, wind, music, another car honking — anything counts."
+      },
+      {
+        title: "Same Color as Me",
+        emoji: "👕",
+        type: "mixed",
+        label: "Mixed",
+        instructions: "Each player picks something they're wearing — shirt, shoes, or a bag — then tries to find something outside that's the same color!",
+        hint: "Tip: Works great with multiple kids since everyone plays with their own color."
+      }
+    ];
+
+    let lastIndex = -1;
+
+    function nextGame() {
+      const pool = games.map((_, i) => i).filter(i => i !== lastIndex);
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      lastIndex = pick;
+
+      const g = games[pick];
+      document.getElementById('card').innerHTML = `
+        <span class="badge ${g.type}">${g.label}</span>
+        <span class="game-emoji">${g.emoji}</span>
+        <h2 class="game-title">${g.title}</h2>
+        <p class="instructions">${g.instructions}</p>
+        <p class="hint"><strong>${g.hint}</strong></p>
+      `;
+    }
+  </script>
+</body>
+</html>
